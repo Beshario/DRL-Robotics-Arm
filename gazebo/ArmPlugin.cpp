@@ -1,7 +1,7 @@
 /* 
  * Author - Dustin Franklin (Nvidia Jetson Developer)
  * Modified by - Sahil Juneja, Kyle Stewart-Frantz
- *
+ * Udacity Student: Beshari Jamal
  */
 
 #include "ArmPlugin.h"
@@ -135,10 +135,13 @@ void ArmPlugin::Load(physics::ModelPtr _parent, sdf::ElementPtr /*_sdf*/)
 	
 	/*
 	/ TODO - Subscribe to camera topic
+	/gazebo::transport::SubscriberPtr sub = node->Subscribe("topic_name", callback_function, class_instance)
 	/
 	*/
+
 	
-	//cameraSub = None;
+	
+	cameraSub = gazebo::transport::SubscriberPtr sub = node->Subscribe("/gazebo/arm_world/camera/link/camera/image", ArmPlugin::onCameraMsg, this)
 
 	// Create our node for collision detection
 	collisionNode->Init();
@@ -148,7 +151,7 @@ void ArmPlugin::Load(physics::ModelPtr _parent, sdf::ElementPtr /*_sdf*/)
 	/
 	*/
 	
-	//collisionSub = None;
+	collisionSub = gazebo::transport::SubscriberPtr sub = node->Subscribe("/gazebo/arm_world/tube/tube_link/my_contact", ArmPlugin::onCollisionMsg, this)
 
 	// Listen to the update event. This event is broadcast every simulation iteration.
 	this->updateConnection = event::Events::ConnectWorldUpdateBegin(boost::bind(&ArmPlugin::OnUpdate, this, _1));
@@ -167,7 +170,9 @@ bool ArmPlugin::createAgent()
 	/
 	*/
 	
-	agent = NULL;
+	agent = dqnAgent::Create(INPUT_WIDTH, INPUT_HEIGHT, INPUT_CHANNELS, DOF, OPTIMIZER,
+				LEARNING_RATE, REPLAY_MEMORY, BATCH_SIZE, GAMMA, EPS_START, EPS_END, EPS_DECAY, 
+				USE_LSTM, LSTM_SIZE, ALLOW_RANDOM, DEBUG);
 
 	if( !agent )
 	{
