@@ -1,7 +1,6 @@
 /* 
  * Author - Dustin Franklin (Nvidia Jetson Developer)
- * Modified by - Sahil Juneja, Kyle Stewart-Frantz
- * Udacity Student: Beshari Jamal
+ * Modified by - Sahil Juneja, Kyle Stewart-Frantz, Beshari Jamal
  */
 
 #include "ArmPlugin.h"
@@ -16,7 +15,7 @@
 #define JOINT_MAX	 2.0f
 
 // Turn on velocity based control
-#define VELOCITY_CONTROL false
+#define VELOCITY_CONTROL true
 #define VELOCITY_MIN -0.2f
 #define VELOCITY_MAX  0.2f
 
@@ -35,22 +34,22 @@
 /
 */
 
-#define INPUT_WIDTH   512
-#define INPUT_HEIGHT  512
-#define OPTIMIZER "None"
-#define LEARNING_RATE 0.0f
+#define INPUT_WIDTH   128
+#define INPUT_HEIGHT  128
+#define OPTIMIZER "RMSprop"
+#define LEARNING_RATE 0.005f
 #define REPLAY_MEMORY 10000
-#define BATCH_SIZE 8
-#define USE_LSTM false
+#define BATCH_SIZE 128
+#define USE_LSTM true
 #define LSTM_SIZE 32
 
 /*
 / TODO - Define Reward Parameters
-/
 */
 
-#define REWARD_WIN  0.0f
-#define REWARD_LOSS -0.0f
+#define REWARD_WIN  10.0f
+#define REWARD_LOSS -1.0f
+#define ALPHA 0.3f
 
 // Define Object Names
 #define WORLD_NAME "arm_world"
@@ -268,19 +267,22 @@ void ArmPlugin::onCollisionMsg(ConstContactsPtr &contacts)
 		/
 		*/
 		
-		/*
+		bool collisionCheck = (strcmp(contacts->contact(i).collision1().c_str(), COLLISION_ITEM) == 0) //item touched
 		
 		if (collisionCheck)
 		{
-			rewardHistory = None;
+		
+			if (strcmp(contacts->contact(i).collision2().c_str(), COLLISION_POINT) == 0) //gripper touched
+				rewardHistory = REWARD_WIN * 25;
+			// if another part of the arm is
+			else
+				rewardHistory = REWARD_LOSS ;
 
-			newReward  = None;
-			endEpisode = None;
+			newReward  = true;
+			endEpisode = true;
 
 			return;
 		}
-		*/
-		
 	}
 }
 
@@ -328,7 +330,12 @@ bool ArmPlugin::updateAgent()
 	/
 	*/
 	
-	float velocity = 0.0; // TODO - Set joint velocity based on whether action is even or odd.
+	float velocity = vel[action/2]; // TODO - Set joint velocity based on whether action is even or odd.
+	
+	if( action % 2 == 0 )
+        velocity += actionVelDelta;
+    else
+        velocity -= actionVelDelta;
 
 	if( velocity < VELOCITY_MIN )
 		velocity = VELOCITY_MIN;
@@ -582,16 +589,16 @@ void ArmPlugin::OnUpdate(const common::UpdateInfo& updateInfo)
 		/ TODO - set appropriate Reward for robot hitting the ground.
 		/
 		*/
+		bool checkGroundContact = (gripBBox.min.z <= groundContact);
 		
-		
-		/*if(checkGroundContact)
+		if(checkGroundContact)
 		{
 						
 			if(DEBUG){printf("GROUND CONTACT, EOE\n");}
 
-			rewardHistory = None;
-			newReward     = None;
-			endEpisode    = None;
+			rewardHistory = REWARD_WIN;
+			newReward     = true;
+			endEpisode    = true;
 		}
 		*/
 		
@@ -600,26 +607,28 @@ void ArmPlugin::OnUpdate(const common::UpdateInfo& updateInfo)
 		/
 		*/ 
 		
-		/*
+		
 		if(!checkGroundContact)
 		{
-			const float distGoal = 0; // compute the reward from distance to the goal
+			const float distGoal = BoxDistance(propBBox, gripBBox);; // compute the reward from distance to the goal
 
 			if(DEBUG){printf("distance('%s', '%s') = %f\n", gripper->GetName().c_str(), prop->model->GetName().c_str(), distGoal);}
 
 			
 			if( episodeFrames > 1 )
 			{
-				const float distDelta  = lastGoalDistance - distGoal;
-
+				const float distDelta  = lastGoalDistance - distGoal; //distance closer to the goal
+				
+				
 				// compute the smoothed moving average of the delta of the distance to the goal
-				avgGoalDelta  = 0.0;
-				rewardHistory = None;
-				newReward     = None;	
+				
+				avgGoalDelta  = ( avgGoalDelta * ALPHA) + ( distDelta * ( 1 - ALPHA ) );
+				rewardHistory =  REWARD_LOSS * abs( ( avgGoalDelta - distDelta) / avgGoalDelta );
+				newReward     = true;	
 			}
 
 			lastGoalDistance = distGoal;
-		} */
+		} 
 	}
 
 	// issue rewards and train DQN
