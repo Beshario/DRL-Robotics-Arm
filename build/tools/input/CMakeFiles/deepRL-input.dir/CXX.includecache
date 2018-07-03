@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/nvidia/RoboND-DeepRL-Project/tools/input/main.cpp
+devInput.h
+/home/nvidia/RoboND-DeepRL-Project/tools/input/devInput.h
+
+aarch64/include/devInput.h
+devKeyboard.h
+aarch64/include/devKeyboard.h
+devJoystick.h
+aarch64/include/devJoystick.h
+utility
+-
+vector
+-
+
+aarch64/include/devJoystick.h
+stdio.h
+-
+stdint.h
+-
+string.h
+-
+string
+-
+
+aarch64/include/devKeyboard.h
+stdio.h
+-
+stdint.h
+-
+string.h
+-
+string
+-
+linux/input-event-codes.h
+-
+
