@@ -289,7 +289,7 @@ void ArmPlugin::onCollisionMsg(ConstContactsPtr &contacts)
 					printf("Gripper Touched Tin\n");
 			}
 			// if another part of the arm is
-			else if (strcmp(contacts->contact(i).collision2().c_str(), COLLISION_NO)!= 0){
+			else if (strcmp(contacts->contact(i).collision2().c_str(), COLLISION_NO)== 0){
 					rewardHistory = REWARD_LOSS*2;
 					printf("Link Touched tIN \n");
 			}
