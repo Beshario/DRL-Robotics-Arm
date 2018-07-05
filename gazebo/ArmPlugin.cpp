@@ -13,7 +13,7 @@
 
 #define JOINT_MIN	-0.75f
 #define JOINT_MAX	 2.0f
-
+// Define Challenge 1 or 2
 #define CHALLENGE 1
 // Turn on velocity based control
 
