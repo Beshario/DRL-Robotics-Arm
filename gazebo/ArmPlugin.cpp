@@ -14,7 +14,9 @@
 #define JOINT_MIN	-0.75f
 #define JOINT_MAX	 2.0f
 
+#define CHALLENGE 1
 // Turn on velocity based control
+
 #define VELOCITY_CONTROL false
 #define VELOCITY_MIN -0.2f
 #define VELOCITY_MAX  0.2f
@@ -275,11 +277,18 @@ void ArmPlugin::onCollisionMsg(ConstContactsPtr &contacts)
 		
 		if (collisionCheck)
 		{
-		
-			if (strcmp(contacts->contact(i).collision2().c_str(), COLLISION_POINT)== 0){ //gripper touched
+			if (CHALLENGE==1){
+				printf("Touched Tin\n");
+				rewardHistory = REWARD_WIN*2;
+				newReward  = true;
+				endEpisode = true;
+			}
+
+			else if (strcmp(contacts->contact(i).collision2().c_str(), COLLISION_POINT)== 0){ //gripper touched
 					rewardHistory = REWARD_WIN*2;
 					printf("Gripper Touched Tin\n");
-			}// if another part of the arm is
+			}
+			// if another part of the arm is
 			else if (strcmp(contacts->contact(i).collision2().c_str(), COLLISION_NO)!= 0){
 					rewardHistory = REWARD_LOSS*2;
 					printf("Link Touched tIN \n");
