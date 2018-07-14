@@ -1,10 +1,17 @@
 
 # Deep RL Arm Manipulation
+This project is based on the Nvidia open source project "jetson-reinforcement" developed by [Dustin Franklin](https://github.com/dusty-nv). The project aims to apply deep reinforcement learning principles as a replacement for traditional control methods. Deep
+Reinforcement Learning is a branch of deep learning and a new researched field. It has many different applications in robotics and
+other disciplines. In this project, a robot successfully learns by reward and punishment, a set of new behaviors to achieve a final goal
+with high accuracy and consistency, it learns not to make contact with the ground, and to only contact a specific object, as an initial
+phase of picking it up later.
 
-This project is based on the Nvidia open source project "jetson-reinforcement" developed by [Dustin Franklin](https://github.com/dusty-nv). The goal of the project is to create a DQN agent and define reward functions to teach a robotic arm to carry out two primary objectives:
+
+ The goal of the project is to create a DQN agent and define reward functions to teach a robotic arm to carry out two primary objectives:
 
 1. Have any part of the robot arm touch the object of interest, with at least a 90% accuracy.
 2. Have only the gripper base of the robot arm touch the object, with at least a 80% accuracy.
+
 
 ## Building from Source (Nvidia Jetson TX2)
 
@@ -76,24 +83,9 @@ WON! episode 50
 027 for 050  (0.5400)  09 of last 20  (0.45)  (max=0.65)
 WON! episode 55
 031 for 055  (0.5636)  12 of last 20  (0.60)  (max=0.65)
-LOST episode 60
-034 for 060  (0.5667)  12 of last 20  (0.60)  (max=0.65)
-WON! episode 65
-038 for 065  (0.5846)  14 of last 20  (0.70)  (max=0.70)
-WON! episode 70
-042 for 070  (0.6000)  15 of last 20  (0.75)  (max=0.75)
-LOST episode 75
-045 for 075  (0.6000)  14 of last 20  (0.70)  (max=0.75)
-WON! episode 80
-050 for 080  (0.6250)  16 of last 20  (0.80)  (max=0.80)
-WON! episode 85
-055 for 085  (0.6471)  17 of last 20  (0.85)  (max=0.85)
-WON! episode 90
-059 for 090  (0.6556)  17 of last 20  (0.85)  (max=0.85)
-WON! episode 95
-063 for 095  (0.6632)  18 of last 20  (0.90)  (max=0.90)
-WON! episode 100
-068 for 100  (0.6800)  18 of last 20  (0.90)  (max=0.90)
+.
+.
+.
 WON! episode 105
 073 for 105  (0.6952)  18 of last 20  (0.90)  (max=0.90)
 WON! episode 110
