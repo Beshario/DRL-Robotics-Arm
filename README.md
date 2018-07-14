@@ -114,8 +114,11 @@ $ ./gazebo-arm.sh
 The plugins which hook the learning into the simulation are located in the `gazebo/` directory of the repo. The RL agent and the reward functions are to be defined in [`ArmPlugin.cpp`](gazebo/ArmPlugin.cpp).
 
 a video of the resultant can be viewed here:
-challenge 1
+
+challenge 1:
+
 https://photos.app.goo.gl/GrEuxJhiNWv7vVX3A
 
 Challenge2: 
+
 https://photos.app.goo.gl/YivpJgoTM6VMusVC9
