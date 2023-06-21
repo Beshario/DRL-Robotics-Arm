@@ -115,10 +115,3 @@ The plugins which hook the learning into the simulation are located in the `gaze
 
 a video of the resultant can be viewed here:
 
-challenge 1:
-
-https://photos.app.goo.gl/GrEuxJhiNWv7vVX3A
-
-Challenge2: 
-
-https://photos.app.goo.gl/YivpJgoTM6VMusVC9
